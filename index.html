@@ -4,24 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/472c68e7e2.js" crossorigin="anonymous"></script>
+    <style>
+        *{
+            margin: 0;
+            padding:0;
+        }
+        .container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+        }
+        .coins{
+            border: 1px solid black;
+            width: 500px;
+            display:flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background-color: #ddd;
+            margin: 20px 0;
+        }
+        .media-body{
+            border-bottom: 1px dotted black;
+            width: 300px;
+        }
+        .conteudoMediaBody{
+            margin-left: 30px;
+        }
+        .paragrafo{
+            margin:0;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Consumindo uma api</h1>
+        <div id="coins" class="coins"/>
+    </div>
+    
+    
+    
     <script type="text/javascript">
-        var apikey ={
-            key: 'e24db419-e964-485c-835a-a77e889694a7'
-            }
+        var apikey = 'e24db419-e964-485c-835a-a77e889694a7';
+        var url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY=';
+        
         //Requisicao fetch
-        fetch('https://pro.api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY=' + apikey.key).
+        fetch(url+apikey).
         then((response) => {
-            if(!resonse.ok) throw new Erros('Erro ao executar a requisição, status ' + response.status);
+            if(!response.ok) throw new Erros('Erro ao executar a requisição, status ' + response.status);
             return response.json();
         }).
         then((api) => {
+            var texto = " "; 
+            for(let i = 0; i <10; i++){
+                texto = texto + `
+                <div class="media">
+                    <div class="align-self-center mr-3" ><i class="fas fa-coins"></i></div>
+                    <div class="media-body">
+                        <div class="conteudoMediaBody">
+                            <h5 class="mt-2">${api.data[i].name}</h5>
+                            <p class="paragrafo">${api.data[i].symbol}</p>
+                            <p class="paragrafo">${api.data[i].first_historical_data}
+                        </div>
+                    </div>
+                </div> `;
+                document.getElementById("coins").innerHTML = texto;
+            }
             console.log(api);
         }).catch((error) => {
             console.error(error.message);
         });
-    
     </script>
 </body>
 </html>
